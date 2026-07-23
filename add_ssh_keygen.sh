@@ -8,6 +8,10 @@ ssh -T git@github.com # answer yes to the prompt
 git clone git@github.com:LenaGao/Linux.git # clone the repo using SSH from GitHub
 
 
+git config --global user.name "Lena_Gao in wsl"
+
+git config --global user.email "junyi-gao@hotmail.com"
+
 # 第一步：生成新的 SSH 密钥
 # 在终端中输入以下命令（将其中的邮箱换成你注册 GitHub 用的邮箱）：
 # code
