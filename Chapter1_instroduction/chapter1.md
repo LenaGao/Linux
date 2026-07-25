@@ -83,3 +83,4 @@ Beijing Desktop Computer
 
 ==== 1.4） 学习方法
 
+1.4.1) Terminal and command  终端和命令行
