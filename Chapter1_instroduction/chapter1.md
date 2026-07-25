@@ -1,13 +1,15 @@
+==== (1.1) UNIX /Linux 发展史
 
-Unix from 1969-1973 
-by 
+Unix from 1969-1973  by 
 Denis Lynch and Ken Thompson
 
 1970-01-01 : The Start Point of the Universe
 
-Linux  from 1992 
-by 
+Linux  from 1992  by 
 Linus Torvalds
+
+
+==== (1.2) open source softwares 
 
 OS & software for personal computer (PC)
 OS & software for Server (PC)
@@ -29,6 +31,8 @@ D
 C: C1 C2
 B: B1 B2 B3
 A: A1 Beyond A1
+
+==== (1.3) Application areas of Linux
 
 https://sitereport.netcraft.com/?url=http://qq.com
 
@@ -70,9 +74,12 @@ Movies :
 
 Beijing Desktop Computer 
 
-
 === Finally 
 两个最重要领域：
 1）企业服务器/网络服务器
 2）嵌入式系统
    手机，平板，智能电视
+
+
+==== 1.4） 学习方法
+
