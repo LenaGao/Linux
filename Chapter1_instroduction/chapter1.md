@@ -83,4 +83,22 @@ Beijing Desktop Computer
 
 ==== 1.4） 学习方法
 
-1.4.1) Terminal and command  终端和命令行
+1.4.1) Terminal and command  终端和命令行, 无图形界面
+
+服务器：稳定性优先， 不考虑易用性
+减少系统资源消耗
+服务器大多数情况下根本没有显示器
+装图像界面，增加了额外的工作
+其实也有一些linux 发行版有华丽的图形界面
+但是服务器定位不同  
+
+1.4.2) Wisdom for Learning Linux
+give full background
+不要马上就问，Search, try and learn by yourself
+帮助，文档，示例，查找 
+English Learning 
+忘掉Window的思维方式  <<< ======
+计划并坚持
+专注，一次坚持一个技术或者一门课程或者一个教程 0.1 > 0
+反复练习， 看作用不大
+
