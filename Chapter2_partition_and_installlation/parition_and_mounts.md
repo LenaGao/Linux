@@ -32,13 +32,14 @@
 
 创建虚拟机时可注意以下资源配置：
 
-| 项目 | 建议 |
-| --- | --- |
+
+| 项目     | 建议                                                                           |
+| -------- | ------------------------------------------------------------------------------ |
 | 虚拟磁盘 | 可设置最大容量（例如 20 GB）。动态分配磁盘通常只会随实际使用逐步占用主机空间。 |
-| 内存 | 不应超过主机可用内存；为主机保留足够资源，避免主机和虚拟机同时卡顿。 |
-| CPU | 虚拟 CPU 数量不应超过主机的逻辑 CPU 数量，并应为主机保留资源。 |
-| 安装介质 | 在虚拟光驱中选择 Linux ISO 镜像，并启用“启动时连接”。 |
-| 网卡 | 根据练习目标选择 NAT、桥接或仅主机网络模式。 |
+| 内存     | 不应超过主机可用内存；为主机保留足够资源，避免主机和虚拟机同时卡顿。           |
+| CPU      | 虚拟 CPU 数量不应超过主机的逻辑 CPU 数量，并应为主机保留资源。                 |
+| 安装介质 | 在虚拟光驱中选择 Linux ISO 镜像，并启用“启动时连接”。                        |
+| 网卡     | 根据练习目标选择 NAT、桥接或仅主机网络模式。                                   |
 
 ### 1.4 快照与克隆
 
@@ -71,13 +72,14 @@
 
 ### 2.2 主分区、扩展分区与逻辑分区
 
-主分区、扩展分区和逻辑分区是传统 **MBR 分区表**中的概念。MBR 的分区表最多只能记录 4 个分区项，因此需要扩展分区来突破分区数量的限制。
+主分区、扩展分区和逻辑分区是传统 **MBR 分区表**中的概念。MBR 的分区表最多只能记录 4 个分区项，因此需要扩展分区来突破分区数量的限制。扩展分区的唯一功能是包含逻辑分区，扩展分区不能格式化也不能写入数据，其包含的逻辑分区可以正常格式化和写入数据。 分区的以上现在并非来自操作系统而是来自于硬盘本身。
 
-| 类型 | 数量限制（MBR） | 作用 |
-| --- | --- | --- |
-| 主分区（Primary Partition） | 最多 4 个；若存在扩展分区，主分区与扩展分区合计最多 4 个 | 可直接创建文件系统、存放数据；传统 BIOS 启动方式下，操作系统通常从主分区启动。 |
-| 扩展分区（Extended Partition） | 每块磁盘最多 1 个，并占用 1 个主分区表项 | 它是一个容器，本身通常不直接存放普通文件系统或挂载使用；其作用是容纳逻辑分区。 |
-| 逻辑分区（Logical Partition） | 可在扩展分区内创建多个；实际数量受工具、系统和磁盘空间限制 | 与普通分区一样可创建文件系统、挂载和保存数据。 |
+
+| 类型                           | 数量限制（MBR）                                            | 作用                                                                           |
+| ------------------------------ | ---------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 主分区（Primary Partition）    | 最多 4 个；若存在扩展分区，主分区与扩展分区合计最多 4 个   | 可直接创建文件系统、存放数据；传统 BIOS 启动方式下，操作系统通常从主分区启动。 |
+| 扩展分区（Extended Partition） | 每块磁盘最多 1 个，并占用 1 个主分区表项                   | 它是一个容器，本身通常不直接存放普通文件系统或挂载使用；其作用是容纳逻辑分区。 |
+| 逻辑分区（Logical Partition）  | 可在扩展分区内创建多个；实际数量受工具、系统和磁盘空间限制 | 与普通分区一样可创建文件系统、挂载和保存数据。                                 |
 
 例如，一块采用 MBR 的磁盘可以划分为：两个主分区、一个扩展分区，以及扩展分区内的多个逻辑分区。扩展分区存在的目的，是让磁盘在四个分区表项的限制下仍能创建更多可用分区。
 
@@ -93,10 +95,38 @@
 这三个步骤容易混淆，顺序通常如下：
 
 1. **分区（Partition）**：在磁盘上划分出一个或多个逻辑区域。
-2. **格式化／创建文件系统（Format / Make filesystem）**：在分区上创建 `ext4`、XFS、Btrfs 等文件系统。
+2. **格式化／创建文件系统（Format / Make filesystem）**：在分区上创建 `ext4`、XFS、Btrfs 等文件系统。 格式化的唯一目的是写入文件系统
 3. **挂载（Mount）**：把已有文件系统连接到 Linux 的目录树中，供用户和程序访问。
 
 > 挂载不是格式化。格式化会创建文件系统；挂载只是让操作系统在某个目录中访问已有文件系统。
+
+### 2.4 Formatting:
+
+* 把柜子分割成小隔断(等大小的空间块/数据块/block)
+* 建立索引
+* 各个空间块的坐标加入索引的过程
+
+（硬盘的空间块远大于人力可以目视的能力，所以数据索引 index  ， 每个文件都有 inode/i节点号 ）
+
+* 我个人理解的格式化: 为了把分区分成整齐的小片段，用来实际存放数据。以及更重要的建立位置索引，将来和文件位置匹配上，
+这是以后查找,修改,删除文件的基础. 
+
+常见文件系统： Windows FAT16 FAT32 NTFS  
+              Linux  EXT2 EXT3  EXT4 
+
+* Formatting (high-level formatting), also known as logical formatting.
+  High-level formatting, or logical formatting, prepares a storage drive for use by installing a file system like NTFS or FAT32, setting up boot sector data, and creating file allocation tables.
+* Most users perform this action when reinstalling an operating system or setting up a new drive.
+* Core Functions
+
+  * File System Creation: Builds the logical structure (such as NTFS, FAT32, or ext4) that lets the operating system read and write data.
+  * Boot Sector Setup: Generates boot records so the computer knows how to load system information from the drive.
+  * Data Removal: Clears access pointers to existing files, making the space available for new data.
+* Comparison with Low-Level Formatting
+
+  * High-Level (Logical): Done by the user or operating system; organizes partitions with file systems.
+  * Low-Level (Physical): Done by the manufacturer; sets the hardware tracks and sectors on the disk platters.
+
 
 ### 2.4 文件系统的基本工作
 
@@ -110,16 +140,30 @@ inode 通常保存文件类型、权限、所有者、时间戳及数据位置�
 
 ### 2.5 Linux 设备文件名
 
+windows的硬盘分区，和格式化之后，分配盘符就可以使用
+但Linux因为无图形界面，所以每个分区先要给设备文件名，然后才能给逻辑位置(类似Windows的分配盘符) 
+
 Linux 内核会把硬盘和分区表示为 `/dev` 目录下的**设备节点**（device nodes）。它们是访问设备驱动的接口，不是普通数据文件。
 
 常见示例：
 
-| 设备 | 含义 |
-| --- | --- |
-| `/dev/sda` | 一块 SATA/SCSI/USB 磁盘（名称会因硬件环境而异） |
-| `/dev/sda1` | `/dev/sda` 的第一个分区 |
-| `/dev/nvme0n1` | 一块 NVMe 磁盘 |
-| `/dev/nvme0n1p1` | 该 NVMe 磁盘的第一个分区 |
+/ 根/root， 相对于window 的我的电脑
+
+设备文件名是系统自动生成的，不需人为干预，看懂即可
+硬盘和分区都需要设备文件名
+
+| 设备             | 含义                                            |
+| ---------------- | ----------------------------------------------- |
+| `/dev/hda`       | 一块 IDE 磁盘（名称会因硬件环境而异） |
+| `/dev/hda1`      | `/dev/hda` 的第一个分区                         |
+| `/dev/sda`       | 一块 SATA/SCSI/USB 磁盘（名称会因硬件环境而异） |
+| `/dev/sda1`      | `/dev/sda` 的第一个分区                         |
+| `/dev/sdb`       | 第二块 SATA/SCSI/USB 磁盘（名称会因硬件环境而异） |
+| `/dev/sdb1`      | `/dev/sdb` 的第一个分区                         |
+| `/dev/cdrom`      | 光驱 ， 也可以写成 `/dev/sr0`                          |
+| `/dev/mouse`      | 鼠标                          |
+| `/dev/nvme0n1`   | 一块 NVMe 磁盘                                  |
+| `/dev/nvme0n1p1` | 该 NVMe 磁盘的第一个分区                        |
 
 可使用下列命令查看磁盘、分区和文件系统：
 
@@ -143,12 +187,13 @@ mount [-t 文件系统类型] [-o 挂载选项] 设备文件名 挂载点
 
 参数说明：
 
-| 参数 | 说明 |
-| --- | --- |
-| `-t` | 指定文件系统类型，例如 `ext4`、`xfs`、`btrfs`。许多情况下可由系统自动识别。 |
-| `-o` | 指定挂载选项，例如 `rw`、`ro`、`noexec`、`nosuid`。多个选项以逗号分隔。 |
-| 设备文件名 | 要挂载的设备或分区，例如 `/dev/sda1`。 |
-| 挂载点 | 用于访问该文件系统的已有目录，例如 `/mnt/data`。 |
+
+| 参数       | 说明                                                                       |
+| ---------- | -------------------------------------------------------------------------- |
+| `-t`       | 指定文件系统类型，例如`ext4`、`xfs`、`btrfs`。许多情况下可由系统自动识别。 |
+| `-o`       | 指定挂载选项，例如`rw`、`ro`、`noexec`、`nosuid`。多个选项以逗号分隔。     |
+| 设备文件名 | 要挂载的设备或分区，例如`/dev/sda1`。                                      |
+| 挂载点     | 用于访问该文件系统的已有目录，例如`/mnt/data`。                            |
 
 ### 3.2 挂载示例
 
@@ -180,10 +225,11 @@ sudo umount /mnt/data
 
 Windows 和 Linux 都能识别硬盘及其分区，只是向用户呈现的方式不同。
 
-| 系统 | 常见访问方式 |
-| --- | --- |
-| Windows | 通常以盘符显示，例如 `C:`、`D:`；底层同样存在设备和卷标识，只是一般不直接展示给普通用户。 |
-| Linux | 通过 `/dev` 下的设备节点表示设备，并将文件系统挂载到统一目录树的某个目录。 |
+
+| 系统    | 常见访问方式                                                                             |
+| ------- | ---------------------------------------------------------------------------------------- |
+| Windows | 通常以盘符显示，例如`C:`、`D:`；底层同样存在设备和卷标识，只是一般不直接展示给普通用户。 |
+| Linux   | 通过`/dev` 下的设备节点表示设备，并将文件系统挂载到统一目录树的某个目录。                |
 
 因此，Linux 中“挂载”是将文件系统接入目录树的必要操作；Windows 则通常自动完成类似的连接，并以盘符的形式呈现给用户。
 
