@@ -291,3 +291,6 @@ BASIC server == 包含编译工具等等 <== 建议这个
 
 
 # 4. Remote login management tool 
+SecureCRT
+putty
+MAC terminal
