@@ -284,16 +284,25 @@ SecureCRT putty MAC terminal
 
 虚拟机的网络连接：
 
-桥接：配置简单，虚拟机可以和主机通讯，可以和外部同学 但需要占用一个真实IP，在家庭内部无所谓，教学环境非常容易冲突 桥接利用真实网卡
-
-NAT/host only 只能和真实机通信，不占用网段 NAT VM8 假网卡和真实机通信 ，可以通过真实机简介和www连接 Host-only VM1 假网卡和真实机通信 只能和真实机通信
-
+桥接：<<===  Default , 必须勾选“已连接”
 虚拟机的网段应该和主机在同一网段
+配置简单，虚拟机可以和主机通讯，可以和外部同学 但需要占用一个真实IP，
+在家庭内部无所谓，教学环境非常容易冲突 桥接利用真实网卡
+
+NAT/host only 只能和真实机通信，不占用网段 
+通过VMnet0 （VM0）这个虚拟网卡和真实机通信，
+因为自动配置，有可能和真实机的网段冲突，导致无法通信
+有可能主机通过有线连接，而桥接到无限网卡，导致无法通信
+
+
+NAT       VM8 假网卡和真实机通信 ，可以通过真实机简介和www连接 
+Host-only VM1 假网卡和真实机通信 只能和真实机通信
+
 
 ```{bash}
 # sudo apt install net-tools
 ifconfig #(interface)
-ifconfig eth0 192.168.118.2 # 设置一个IP地址
+ifconfig eth0 192.168.118.2 # 设置一个IP地址，只是临时生效，重启后失效。必须写入配置文件才能永久生效
 ```
 
 eth0: flags=4163\<UP,BROADCAST,RUNNING,MULTICAST\> mtu 1280 inet 100.71.137.123 netmask 255.255.255.255 broadcast 100.71.137.123 inet6 fe80::aa6e:aaa8:fbf9:c072 prefixlen 64 scopeid 0x20<link> inet6 fd7a:115c:a1e0::ee3a:897b prefixlen 128 scopeid 0x0<global> ether 00:15:5d:ed:38:49 txqueuelen 1000 (Ethernet) RX packets 0 bytes 0 (0.0 B) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 10 bytes 964 (964.0 B) TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
@@ -305,3 +314,26 @@ eth2: flags=4163\<UP,BROADCAST,RUNNING,MULTICAST\> mtu 1500 inet 10.0.0.107 netm
 lo: flags=73\<UP,LOOPBACK,RUNNING\> mtu 65536 inet 127.0.0.1 netmask 255.0.0.0 inet6 ::1 prefixlen 128 scopeid 0x10<host> loop txqueuelen 1000 (Local Loopback) RX packets 8 bytes 1087 (1.0 KB) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 8 bytes 1087 (1.0 KB) TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
 
 loopback0: flags=4163\<UP,BROADCAST,RUNNING,MULTICAST\> mtu 1500 ether 00:15:5d:17:04:0d txqueuelen 1000 (Ethernet) RX packets 102429 bytes 47198885 (47.1 MB) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 63069 bytes 96645541 (96.6 MB) TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
+
+
+```{bash}
+ping google.com
+```
+
+ping google.com
+PING google.com (2607:f8b0:4006:81a::200e) 56 data bytes
+64 bytes from lclgaa-bb-in-x0e.1e100.net (2607:f8b0:4006:81a::200e): icmp_seq=1 ttl=115 time=18.4 ms
+64 bytes from lclgaa-bb-in-x0e.1e100.net (2607:f8b0:4006:81a::200e): icmp_seq=2 ttl=115 time=20.7 ms
+64 bytes from lclgaa-bb-in-x0e.1e100.net (2607:f8b0:4006:81a::200e): icmp_seq=3 ttl=115 time=15.6 ms
+64 bytes from lclgaa-bb-in-x0e.1e100.net (2607:f8b0:4006:81a::200e): icmp_seq=4 ttl=115 time=17.2 ms
+64 bytes from lclgaa-bb-in-x0e.1e100.net (2607:f8b0:4006:81a::200e): icmp_seq=5 ttl=115 time=21.6 ms
+64 bytes from lclgaa-bb-in-x0e.1e100.net (2607:f8b0:4006:81a::200e): icmp_seq=6 ttl=115 time=19.5 ms
+^C
+--- google.com ping statistics ---
+6 packets transmitted, 6 received, 0% packet loss, time 4996ms
+rtt min/avg/max/mdev = 15.642/18.829/21.575/2.023 ms
+
+
+一般不建议root 连接
+
+但本教程为了教学目的， 使用root 连接
