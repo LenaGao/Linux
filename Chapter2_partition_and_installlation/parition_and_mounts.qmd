@@ -280,7 +280,18 @@ swap 是一种文件系统类型，而不是挂载点
 
 远程登录工具和Linux 无关，而是各种操作系统中有有远程登录工具， 可以管理远程府服务器
 
-SecureCRT putty MAC terminal
+SecureCRT 
+putty 
+MAC terminal
+
+
+##
+ file transfer tool
+WinSCP == FileZilla 
+
+###### less important
+VNC
+X-Manager
 
 虚拟机的网络连接：
 
@@ -337,3 +348,12 @@ rtt min/avg/max/mdev = 15.642/18.829/21.575/2.023 ms
 一般不建议root 连接
 
 但本教程为了教学目的， 使用root 连接
+
+\# root prompt   
+$ regular user prompt
+
+df -hT
+
+Chiniese Font
+
+UTF-8 
