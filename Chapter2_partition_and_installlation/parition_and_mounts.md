@@ -291,6 +291,11 @@ BASIC server == 包含编译工具等等 <== 建议这个
 
 
 # 4. Remote login management tool 
+
+实际上在现实工作中，基本不可能直接在服务器上直接操作，而是远程登录管理
+
+远程登录工具和Linux 无关，而是各种操作系统中有有远程登录工具， 可以管理远程府服务器
+
 SecureCRT
 putty
 MAC terminal
