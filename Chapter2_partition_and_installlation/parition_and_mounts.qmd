@@ -1,0 +1,307 @@
+# Linux 系统安装、分区与挂载
+
+本章介绍在虚拟机中安装 Linux 时的基础概念，以及磁盘分区、文件系统和挂载之间的关系。
+
+## 1. 使用 VMware 虚拟机
+
+虚拟机（Virtual Machine，VM）是在一台物理计算机上运行的“模拟计算机”。它可以让一台主机同时运行多个操作系统，例如在 Windows 中运行 Linux。
+
+### 1.1 虚拟机的优点
+
+-   可以在一台电脑中运行多个操作系统。
+-   虚拟机通常可以通过主机的网络访问互联网。
+-   CPU、内存、磁盘、网卡等硬件资源可按需调整。
+-   适合练习安装、分区、网络配置等操作，不会直接影响真实主机。
+-   可以使用快照快速回到某个可用状态。
+
+> Windows 现在可通过 WSL（Windows Subsystem for Linux）使用 Linux 环境；但若要学习完整的系统安装、磁盘分区和硬件配置，虚拟机通常更合适。
+
+### 1.2 软件与安装位置建议
+
+服务器软件并非越新越好。较成熟的稳定版本往往 Bug 更少、系统要求更低，也更便于长期维护。
+
+在 Windows 主机上安装虚拟机软件时，建议不要把大量应用程序或虚拟机文件都放在系统盘（通常是 `C:`）。原因如下：
+
+-   为系统盘保留足够空间，可降低系统更新或故障恢复时的风险。
+-   将虚拟机文件放在数据盘（如 `D:`）中，重装系统后更容易保留和重新使用数据。
+-   为每台虚拟机建立独立目录；不再使用时，删除该目录即可，便于管理。
+
+### 1.3 创建虚拟机的建议
+
+学习阶段建议先创建一块**空白虚拟磁盘**，再手动安装操作系统和进行分区。这样可以理解每一步的作用，避免完全依赖自动化安装。
+
+创建虚拟机时可注意以下资源配置：
+
+| 项目 | 建议 |
+|-------------|-----------------------------------------------------------|
+| 虚拟磁盘 | 可设置最大容量（例如 20 GB）。动态分配磁盘通常只会随实际使用逐步占用主机空间。 |
+| 内存 | 不应超过主机可用内存；为主机保留足够资源，避免主机和虚拟机同时卡顿。 |
+| CPU | 虚拟 CPU 数量不应超过主机的逻辑 CPU 数量，并应为主机保留资源。 |
+| 安装介质 | 在虚拟光驱中选择 Linux ISO 镜像，并启用“启动时连接”。 |
+| 网卡 | 根据练习目标选择 NAT、桥接或仅主机网络模式。 |
+
+### 1.4 快照与克隆
+
+#### 快照（Snapshot）
+
+快照会记录虚拟机在某个时间点的状态。配置实验或升级前创建快照，出现问题后可恢复到该状态。
+
+> 快照会消耗额外磁盘空间；不应长期大量保留。真实物理机通常没有这种一键快照能力。
+
+#### 克隆（Clone）
+
+克隆用于复制一台虚拟机。
+
+-   **链接克隆**：与原虚拟机共享部分基础磁盘文件，占用空间较少；原虚拟机或其文件缺失时，链接克隆可能无法正常运行。
+-   **完整克隆**：复制出独立的虚拟机文件，占用空间较多，但不依赖原虚拟机。
+
+------------------------------------------------------------------------
+
+## 2. 磁盘分区与文件系统
+
+### 2.1 为什么要分区
+
+可以把一块完整磁盘理解为一个大柜子，分区则是把大柜子划分为多个小柜子。每个分区可以独立格式化、挂载和管理。
+
+分区常用于：
+
+-   将系统、用户数据和备份数据分开管理。
+-   为不同用途选择不同的文件系统或挂载选项。
+-   在重装系统时尽可能保留独立的数据分区。
+
+### 2.2 主分区、扩展分区与逻辑分区
+
+主分区、扩展分区和逻辑分区是传统 **MBR 分区表**中的概念。MBR 的分区表最多只能记录 4 个分区项，因此需要扩展分区来突破分区数量的限制。扩展分区的唯一功能是包含逻辑分区，扩展分区不能格式化也不能写入数据，其包含的逻辑分区可以正常格式化和写入数据。 分区的以上现在并非来自操作系统而是来自于硬盘本身。
+
+| 类型 | 数量限制（MBR） | 作用 |
+|-----------------|------------------------|--------------------------------|
+| 主分区（Primary Partition） | 最多 4 个；若存在扩展分区，主分区与扩展分区合计最多 4 个 | 可直接创建文件系统、存放数据；传统 BIOS 启动方式下，操作系统通常从主分区启动。 |
+| 扩展分区（Extended Partition） | 每块磁盘最多 1 个，并占用 1 个主分区表项 | 它是一个容器，本身通常不直接存放普通文件系统或挂载使用；其作用是容纳逻辑分区。 |
+| 逻辑分区（Logical Partition） | 可在扩展分区内创建多个；实际数量受工具、系统和磁盘空间限制 | 与普通分区一样可创建文件系统、挂载和保存数据。 |
+
+例如，一块采用 MBR 的磁盘可以划分为：两个主分区、一个扩展分区，以及扩展分区内的多个逻辑分区。扩展分区存在的目的，是让磁盘在四个分区表项的限制下仍能创建更多可用分区。
+
+在 Linux 中，传统命名通常为：
+
+-   `/dev/sda1` 到 `/dev/sda4`：主分区或扩展分区。
+-   `/dev/sda5` 及以后：扩展分区中的逻辑分区。
+
+> GPT（GUID Partition Table）没有“主分区、扩展分区、逻辑分区”的划分，也没有 MBR 的四分区限制。现代 UEFI 系统通常使用 GPT；学习旧系统、MBR 磁盘或相关考试内容时，仍需理解上述概念。
+
+### 2.3 分区、格式化与挂载的关系
+
+这三个步骤容易混淆，顺序通常如下：
+
+1.  **分区（Partition）**：在磁盘上划分出一个或多个逻辑区域。
+2.  **格式化／创建文件系统（Format / Make filesystem）**：在分区上创建 `ext4`、XFS、Btrfs 等文件系统。 格式化的唯一目的是写入文件系统
+3.  **挂载（Mount）**：把已有文件系统连接到 Linux 的目录树中，供用户和程序访问。
+
+> 挂载不是格式化。格式化会创建文件系统；挂载只是让操作系统在某个目录中访问已有文件系统。
+
+### 2.4 Formatting:
+
+-   把柜子分割成小隔断(等大小的空间块/数据块/block)
+-   建立索引
+-   各个空间块的坐标加入索引的过程
+-   会附带清空原数据
+
+（硬盘的空间块远大于人力可以目视的能力，所以数据索引 index ， 每个文件都有 inode/i节点号 ）
+
+-   我个人理解的格式化: 为了把分区分成整齐的小片段，用来实际存放数据。以及更重要的建立位置索引，将来和文件位置匹配上， 这是以后查找,修改,删除文件的基础.
+
+常见文件系统： Windows FAT16 FAT32 NTFS\
+Linux EXT2 EXT3 EXT4
+
+-   Formatting (high-level formatting), also known as logical formatting. High-level formatting, or logical formatting, prepares a storage drive for use by installing a file system like NTFS or FAT32, setting up boot sector data, and creating file allocation tables.
+
+-   Most users perform this action when reinstalling an operating system or setting up a new drive.
+
+-   Core Functions
+
+    -   File System Creation: Builds the logical structure (such as NTFS, FAT32, or ext4) that lets the operating system read and write data.
+    -   Boot Sector Setup: Generates boot records so the computer knows how to load system information from the drive.
+    -   Data Removal: Clears access pointers to existing files, making the space available for new data.
+
+-   Comparison with Low-Level Formatting
+
+    -   High-Level (Logical): Done by the user or operating system; organizes partitions with file systems.
+    -   Low-Level (Physical): Done by the manufacturer; sets the hardware tracks and sectors on the disk platters.
+
+### 2.4 文件系统的基本工作
+
+文件系统负责在分区中组织和查找文件。以常见 Linux 文件系统为例，它主要会：
+
+1.  将存储空间按固定大小划分为数据块（例如 4 KiB）。
+2.  为文件和目录保存元数据；在许多 Linux 文件系统中，这些元数据由 inode（索引节点）表示。
+3.  记录数据块的使用情况和文件目录结构，以便根据文件名定位 inode，再读取对应的数据块。
+
+inode 通常保存文件类型、权限、所有者、时间戳及数据位置等信息；文件名与 inode 的对应关系由目录保存。
+
+### 2.5 Linux 设备文件名
+
+windows的硬盘分区，和格式化之后，分配盘符就可以使用 但Linux因为无图形界面，所以每个分区先要给设备文件名，然后才能给逻辑位置(类似Windows的分配盘符)
+
+Linux 内核会把硬盘和分区表示为 `/dev` 目录下的**设备节点**（device nodes）。它们是访问设备驱动的接口，不是普通数据文件。
+
+常见示例：
+
+/ 根/root， 相对于window 的我的电脑
+
+设备文件名是系统自动生成的，不需人为干预，看懂即可 硬盘和分区都需要设备文件名
+
+| 设备             | 含义                                              |
+|------------------|---------------------------------------------------|
+| `/dev/hda`       | 一块 IDE 磁盘（名称会因硬件环境而异）             |
+| `/dev/hda1`      | `/dev/hda` 的第一个分区                           |
+| `/dev/sda`       | 一块 SATA/SCSI/USB 磁盘（名称会因硬件环境而异）   |
+| `/dev/sda1`      | `/dev/sda` 的第一个分区                           |
+| `/dev/sdb`       | 第二块 SATA/SCSI/USB 磁盘（名称会因硬件环境而异） |
+| `/dev/sdb1`      | `/dev/sdb` 的第一个分区                           |
+| `/dev/cdrom`     | 光驱 ， 也可以写成 `/dev/sr0`                     |
+| `/dev/mouse`     | 鼠标                                              |
+| `/dev/nvme0n1`   | 一块 NVMe 磁盘                                    |
+| `/dev/nvme0n1p1` | 该 NVMe 磁盘的第一个分区                          |
+
+可使用下列命令查看磁盘、分区和文件系统：
+
+``` bash
+lsblk -f
+```
+
+------------------------------------------------------------------------
+
+## 2.6 挂载文件系统
+
+Linux 使用统一的目录树。一个分区或其他存储设备必须挂载到某个目录（称为**挂载点**）后，才能通过该目录访问其中的文件。
+
+例如，将 `/dev/sda1` 挂载到 `/mnt/data` 后，访问 `/mnt/data` 实际上就是访问 `/dev/sda1` 中的文件系统。
+
+"空"目录可以作为挂载点( 类似windows 的盘符 )
+
+必备分区: / 根分区 swap分区 交换分区，内存2倍，不超过2GB ==\> 我在当代Linux 上的固体硬盘中swap 到了62G 2026年注
+
+推荐分区: /boot 启动分区， 200M , 专门为了启动，设置之后就不再写数据，保证永远有空间，永远可以启动, 实际上总有 不至于不设boot分区时，/根分区写满, 无法启动
+
+### 2.6.1 `mount` 命令格式
+
+``` bash
+mount [-t 文件系统类型] [-o 挂载选项] 设备文件名 挂载点
+```
+
+参数说明：
+
+| 参数 | 说明 |
+|--------------|----------------------------------------------------------|
+| `-t` | 指定文件系统类型，例如`ext4`、`xfs`、`btrfs`。许多情况下可由系统自动识别。 |
+| `-o` | 指定挂载选项，例如`rw`、`ro`、`noexec`、`nosuid`。多个选项以逗号分隔。 |
+| 设备文件名 | 要挂载的设备或分区，例如`/dev/sda1`。 |
+| 挂载点 | 用于访问该文件系统的已有目录，例如`/mnt/data`。 |
+
+### 2.6.2 挂载示例
+
+先创建挂载点，再进行挂载：
+
+``` bash
+sudo mkdir -p /mnt/data
+sudo mount -t ext4 -o rw,noexec,nosuid /dev/sda1 /mnt/data
+```
+
+查看当前挂载状态：
+
+``` bash
+findmnt /mnt/data
+df -hT /mnt/data
+```
+
+卸载时，确保没有程序正在使用该目录：
+
+``` bash
+sudo umount /mnt/data
+```
+
+> 以上命令中的 `/dev/sda1` 仅为示例。执行格式化、挂载或卸载操作前，请用 `lsblk -f` 确认目标设备，避免操作到错误分区。
+
+------------------------------------------------------------------------
+
+### 2.6.3 Linux 与 Windows 的磁盘访问方式
+
+Windows 和 Linux 都能识别硬盘及其分区，只是向用户呈现的方式不同。
+
+| 系统 | 常见访问方式 |
+|-------------|-----------------------------------------------------------|
+| Windows | 通常以盘符显示，例如`C:`、`D:`；底层同样存在设备和卷标识，只是一般不直接展示给普通用户。 |
+| Linux | 通过`/dev` 下的设备节点表示设备，并将文件系统挂载到统一目录树的某个目录。 |
+
+因此，Linux 中“挂载”是将文件系统接入目录树的必要操作；Windows 则通常自动完成类似的连接，并以盘符的形式呈现给用户。
+
+### 5. 小结
+
+-   分区是在磁盘上划分存储区域。
+-   格式化是在分区上创建文件系统。
+-   挂载是将文件系统连接到 Linux 目录树。
+-   `/dev/sda1` 等是设备节点；`/mnt/data` 等是挂载点。
+-   虚拟机适合练习 Linux 安装、分区和系统管理操作；快照与克隆可帮助快速回滚或复制实验环境。
+
+# 3. Installation
+
+BIOS : motherboard operating system 主板上的微型操作系统
+
+F1 , F11 to BIOS
+
+Set the boot sequence (从硬盘还是光盘还是软盘还是U盘引导操作系统进入内存)
+
+Use + to change the order
+
+install from local driver 硬盘启动
+
+Suggest 简体中文安装
+
+root 密码
+
+密码三原则： 复杂性 易记性 时效性
+
+一般先分/boot 自动变成 sda1 也就是第一个分区
+
+swap 是一种文件系统类型，而不是挂载点
+
+分区之后一定要格式化（自动选yes）否则无文件系统
+
+软件包选择:
+
+桌面 == 个人用户 最小化 == 服务器 BASIC server == 包含编译工具等等 \<== 建议这个
+
+但这个教程，需要很多工具， 很早很多命令行工具在最小化安装中都没有
+
+需要改成再次进入BIOS ==\> 从硬盘启动
+
+# 4. Remote login management tool
+
+实际上在现实工作中，基本不可能直接在服务器上直接操作，而是远程登录管理
+
+远程登录工具和Linux 无关，而是各种操作系统中有有远程登录工具， 可以管理远程府服务器
+
+SecureCRT putty MAC terminal
+
+虚拟机的网络连接：
+
+桥接：配置简单，虚拟机可以和主机通讯，可以和外部同学 但需要占用一个真实IP，在家庭内部无所谓，教学环境非常容易冲突 桥接利用真实网卡
+
+NAT/host only 只能和真实机通信，不占用网段 NAT VM8 假网卡和真实机通信 ，可以通过真实机简介和www连接 Host-only VM1 假网卡和真实机通信 只能和真实机通信
+
+虚拟机的网段应该和主机在同一网段
+
+```{bash}
+# sudo apt install net-tools
+ifconfig #(interface)
+ifconfig eth0 192.168.118.2 # 设置一个IP地址
+```
+
+eth0: flags=4163\<UP,BROADCAST,RUNNING,MULTICAST\> mtu 1280 inet 100.71.137.123 netmask 255.255.255.255 broadcast 100.71.137.123 inet6 fe80::aa6e:aaa8:fbf9:c072 prefixlen 64 scopeid 0x20<link> inet6 fd7a:115c:a1e0::ee3a:897b prefixlen 128 scopeid 0x0<global> ether 00:15:5d:ed:38:49 txqueuelen 1000 (Ethernet) RX packets 0 bytes 0 (0.0 B) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 10 bytes 964 (964.0 B) TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
+
+eth1: flags=4163\<UP,BROADCAST,RUNNING,MULTICAST\> mtu 1500 inet 10.0.0.178 netmask 255.255.255.0 broadcast 10.0.0.255 inet6 2601:19b:786:a230::c1b prefixlen 128 scopeid 0x0<global> inet6 2601:19b:786:a230:2245:a9b:f710:33a1 prefixlen 64 scopeid 0x0<global> inet6 2601:19b:786:a230:58c:81fc:9ed1:b055 prefixlen 128 scopeid 0x0<global> inet6 fe80::e5e4:e9ea:accd:4b65 prefixlen 64 scopeid 0x20<link> ether d4:93:90:12:53:12 txqueuelen 1000 (Ethernet) RX packets 36078 bytes 56095610 (56.0 MB) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 20155 bytes 7068785 (7.0 MB) TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
+
+eth2: flags=4163\<UP,BROADCAST,RUNNING,MULTICAST\> mtu 1500 inet 10.0.0.107 netmask 255.255.255.0 broadcast 10.0.0.255 inet6 2601:19b:786:a230::f27a prefixlen 128 scopeid 0x0<global> inet6 2601:19b:786:a230:ada4:e005:3a18:50f2 prefixlen 128 scopeid 0x0<global> inet6 2601:19b:786:a230:8f0c:4499:7e7f:4154 prefixlen 64 scopeid 0x0<global> inet6 fe80::37:9391:1d1a:fdb4 prefixlen 64 scopeid 0x20<link> ether dc:21:48:ab:01:12 txqueuelen 1000 (Ethernet) RX packets 453 bytes 33310 (33.3 KB) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 5 bytes 690 (690.0 B) TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
+
+lo: flags=73\<UP,LOOPBACK,RUNNING\> mtu 65536 inet 127.0.0.1 netmask 255.0.0.0 inet6 ::1 prefixlen 128 scopeid 0x10<host> loop txqueuelen 1000 (Local Loopback) RX packets 8 bytes 1087 (1.0 KB) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 8 bytes 1087 (1.0 KB) TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
+
+loopback0: flags=4163\<UP,BROADCAST,RUNNING,MULTICAST\> mtu 1500 ether 00:15:5d:17:04:0d txqueuelen 1000 (Ethernet) RX packets 102429 bytes 47198885 (47.1 MB) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 63069 bytes 96645541 (96.6 MB) TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0

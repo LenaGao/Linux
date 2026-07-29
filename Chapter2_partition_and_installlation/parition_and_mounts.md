@@ -255,9 +255,11 @@ Windows 和 Linux 都能识别硬盘及其分区，只是向用户呈现的方�
 
 # 3. Installation 
 
-BIOS : motherboard operating system 
+BIOS : motherboard operating system 主板上的微型操作系统
 
 F1 , F11 to BIOS 
+
+
 
 Set the boot sequence (从硬盘还是光盘还是软盘还是U盘引导操作系统进入内存)
 
@@ -299,3 +301,24 @@ BASIC server == 包含编译工具等等 <== 建议这个
 SecureCRT
 putty
 MAC terminal
+
+虚拟机的网络连接：
+
+桥接：配置简单，虚拟机可以和主机通讯，可以和外部同学
+但需要占用一个真实IP，在家庭内部无所谓，教学环境非常容易冲突
+桥接利用真实网卡
+
+NAT/host only                 只能和真实机通信，不占用网段
+NAT       VM8 假网卡和真实机通信 ，可以通过真实机简介和www连接
+Host-only VM1 假网卡和真实机通信  只能和真实机通信
+
+虚拟机的网段应该和主机在同一网段
+
+
+
+# sudo apt install net-tools
+```bash
+ifconfig
+```
+
+(interface)
