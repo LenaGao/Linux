@@ -89,6 +89,8 @@ rm -rf tmp/tmp2_ZG
 # move mv 剪切和更名
 cp snap snap0 
 cp snap snap1 
+cp snap snap3  
+cp snap snap4  
 mv snap snap2
 
 # 绝对路径和相对路径
@@ -96,9 +98,19 @@ mv snap snap2
 # 相对路径：相对于当前工作目录的路径 
 
 #rm  remove file or directory
+# linux rm 命令用于删除文件和目录。它可以删除单个文件、多个文件或整个目录及其内容。
+# 使用 rm 命令时要小心，因为删除的文件通常无法恢复。
+# Linux 并无回收站，
+# 无法恢复被删除的文件，除非使用特殊工具或备份。
+# Linux rm 命令的基本语法如下：
 rm snap0
-rm -f snap1
+rm -f snap1 # force 删除，不提示, 强制删除文件或目录，即使它们是只读的。
+rm -r snap1 # force 删除，不提示, 强制删除文件或目录，即使它们是只读的。
+rm -rf snap1 # force 删除，不提示, 强制删除文件或目录，即使它们是只读的。
 
+# 一旦误删除，尽量减少对磁盘的写入操作，避免覆盖被删除文件的数据块。
+# 然后可以尝试使用数据恢复工具（如 TestDisk、PhotoRec 等）
+# 来扫描磁盘并恢复被删除的文件。
 
 touch ./tmp/story.list
 cd ./tmp
