@@ -1,3 +1,4 @@
+#### 文件处理命令
 #! /home/gao/bash 
 # cmd [-option] [parameters]     
 # 选项： 调整功能，
@@ -116,7 +117,7 @@ rm -rf snap1 # force 删除，不提示, 强制删除文件或目录，即使它
 
 
 
-
+#### 文件处理命令
 
 touch ./tmp/story.list
 cd ./tmp
