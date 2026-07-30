@@ -78,10 +78,21 @@ clear # Ctrl + l
 # move and rename 
 mv  tmp/tmp/3rd_level_dir_renamed   tmp/tmp1_ZG
 
-cp -r tmp/tmp1_ZG     tmp/tmp2_ZG    
+# cp copy file or directory
+cp -r tmp/tmp1_ZG     tmp/tmp2_ZG     # 复制目录
 rm -rf tmp/tmp2_ZG    
-# -f
-# -r  
+# -f # 强制删除，且不提示
+# -r # 递归删除目录及其内容 
+# -p # 保存文件属性  
+#    # 可以复制同时更名
+
+# move mv 剪切和更名
+cp snap snap0
+mv snap snap1
+
+# 绝对路径和相对路径
+# 绝对路径：从根目录开始的完整路径
+# 相对路径：相对于当前工作目录的路径 
 
 touch ./tmp/story.list
 cd ./tmp
