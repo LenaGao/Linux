@@ -87,12 +87,18 @@ rm -rf tmp/tmp2_ZG
 #    # 可以复制同时更名
 
 # move mv 剪切和更名
-cp snap snap0
-mv snap snap1
+cp snap snap0 
+cp snap snap1 
+mv snap snap2
 
 # 绝对路径和相对路径
 # 绝对路径：从根目录开始的完整路径
 # 相对路径：相对于当前工作目录的路径 
+
+#rm  remove file or directory
+rm snap0
+rm -f snap1
+
 
 touch ./tmp/story.list
 cd ./tmp
