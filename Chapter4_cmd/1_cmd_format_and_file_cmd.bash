@@ -112,6 +112,12 @@ rm -rf snap1 # force 删除，不提示, 强制删除文件或目录，即使它
 # 然后可以尝试使用数据恢复工具（如 TestDisk、PhotoRec 等）
 # 来扫描磁盘并恢复被删除的文件。
 
+
+
+
+
+
+
 touch ./tmp/story.list
 cd ./tmp
 touch shencao girl
