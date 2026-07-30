@@ -8,12 +8,30 @@ ls -la /etc
 # option has simplified and full format 简化选项完整选项
 -a == --all
 
+# ls -la /etc
+# total 892
+# drwxr-xr-x 93 root root       4096 Jul 30 11:24 .
+# drwxr-xr-x 27 root root       4096 Jul 30 11:24 ..
+# -rw-r--r--  1 root root       3444 Jul  5  2023 adduser.conf
+# drwxr-xr-x  2 root root       4096 Jul 22 18:11 alternatives
+
+# -rwxr--rw-
+# u g o 
+# user group other
+# 所有者，所属组，其他人 
+- d l 文件，目录，软连接(字符设备文件，块设备文件)  
+r read   w write  x execute   - no permission 
+哪怕是所有者，默认权限没有 x ，也不能执行，必须 chmod +x 才能执行 
+
+inode number  每个文件都有一个 inode number ，
+inode 节点 是文件的唯一标识符，inode number 记录了文件的元数据（metadata），
+包括文件类型、权限、所有者、大小、创建时间、修改时间等信息。inode number 不包含文件名和路径信息，
+文件名和路径信息存储在目录项中。inode number 是文件系统内部使用的标识符，用于快速定位文件数据块。
+
 ls -l -a -h -d -i
 lla
 ld # ls -ld */  -d 让 ls 本身列出目录条目（而不是目录内容） */ 是 shell 通配符，只匹配目录
 
-# -rwxr--rw-
-# u g o
 
 mkdir ./tmp/
 mkdir ./tmp/Japan/boduo
