@@ -3,6 +3,7 @@
 # 选项： 调整功能，
 # 参数： 操作的对象，比如： 用户，进程，文件，目录等
 
+# ls => list
 ls -la /etc 
 # option can be used together -al == -al = -l -a
 # option has simplified and full format 简化选项完整选项
@@ -32,16 +33,21 @@ ls -l -a -h -d -i
 lla
 ld # ls -ld */  -d 让 ls 本身列出目录条目（而不是目录内容） */ 是 shell 通配符，只匹配目录
 
-
+make directory 
+生成目录（文件夹） ， 目录结构应该事先规划好，避免重复创建目录，浪费空间
 mkdir ./tmp/
 mkdir ./tmp/Japan/boduo
-mkdir -r./tmp/Japan/boduo # mkdir recursively and touch a file 
+mkdir -p ./tmp/Japan/boduo # mkdir recursively and touch a file  递归创建
 mkdir ./tmp/Japan/longze  ./tmp/Japan/cangjing
 
+# some -p , some -r 
 mkdir -p ./tmp/tmp3_ZG/3rd_level_dir/f  && touch ./tmp/tmp3_ZG/3rd_level_dir/file.txt 
 # cp -r tmp/tmp3_ZG/    tmp/tmp1_ZG/     # recursive 
 llh ./tmp/tmp3_ZG/
 ll ./tmp/tmp3_ZG/3rd_level_dir/file.txt
+
+
+# change directory
 
 cd 
 cd ..
@@ -49,9 +55,14 @@ cd ../..
 cd /tmp/tmp3_ZG/
 cd -
 
+# print working directory
 pwd
 
+.
+..
 
+
+# remove directory 仅能删除空目录，不能删除非空目录
 rmdir tmp # delete blank dir
 rmdir tmp1
 
