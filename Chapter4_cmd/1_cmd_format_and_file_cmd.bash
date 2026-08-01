@@ -118,15 +118,18 @@ rm -rf snap1 # force 删除，不提示, 强制删除文件或目录，即使它
 
 
 #### 文件处理命令
+# 如果没有路径，默认在当前目录下创建文件
+# 除了/ forward slash 不能作为文件名，其他符号都可以作为文件名.
+# 严重不推荐文件名包含空格，空格会导致很多麻烦，尤其是 shell 脚本中，空格会被当作分隔符，导致命令解析错误。
 
 touch ./tmp/story.list
 cd ./tmp
 touch shencao girl
 touch "shencao girl" # dot NOT use Space , troublesome 
 
-
+# 显示文件内容
 cat /etc/issue
-cat -n /etc/issue
+cat -n /etc/issue # 显示行号
 
 cat /etc/services
 tac /etc/services # reverse
