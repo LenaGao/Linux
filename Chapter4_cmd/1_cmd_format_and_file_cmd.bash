@@ -160,23 +160,50 @@ ls -l
 
 ls -l
 total 40
+
+# 软连接的特点
+# 1) 软连接是一个独立的文件，包含指向目标文件的路径信息，而硬连接是指向同一个 inode 的不同目录项。
+# 2) 软连接可以跨文件系统，而硬连接不能跨文件系统。
+# 3) 删除软连接不会影响目标文件，而删除硬连接会影响目标文件的引用计数，可能导致文件被删除。
+# 4）软连接可以指向目录，而硬连接不能指向目录。
+# 5）软连接极小
+# 6）软连接有 l 标注
+
 -rw-r--r-- 1 lena lena   338 Jul 29 10:37 AGENTS.md
 drwxr-xr-x 6 lena lena  4096 Jul 29 17:58 All_Tricks
 drwxr-xr-x 7 lena lena  4096 Jul 29 20:31 Linux
 drwxr-xr-x 3 lena lena  4096 Jul 22 22:42 Linux_and_Cluster_for_Omics-master
--rw-r--r-- 2 lena lena 12813 Jul 31 20:57 service_hard
 # lrwxrwxrwx 1 lena lena    23 Jul 31 20:57 service_link -> /home/lena/tmp/services # ->    =======
-# EVRY Special !
-# lrwxrwxrwx  
-
-drwx------ 3 lena lena  4096 Jul 29 18:22 snap
-drwxr-xr-x 2 lena lena  4096 Jul 31 20:57 tmp
+# EVRY Special !!!! 
+# lrwxrwxrwx
+# very tiny 23 bytes  
 
 # 删除软连接的时候有一个时需要高度注意 
 # rm  service_link  # 只删除软连接本身，不会影响原文件
 # rm  service_link/  # 删除原文件夹！ ，非常危险，
 # rm  service_link/  会删除原文件夹及其内容，因为 service_link 是一个指向 /home/lena/tmp/services 的软连接，
 # 使用 rm service_link/ 会被解释为删除 /home/lena/tmp/services 目录及其内容。
+
+# 硬链接的特点： 
+# 1)最大特点同步更新
+# 2) 硬链接删除一个文件，另一个文件仍然存在，且内容不变
+# 3) 硬链接不能跨分区，不能对目录使用
+# 硬链接不能针对目录使用，因为目录的硬链接可能会导致文件系统结构混乱，破坏文件系统的一致性和完整性。
+
+# ls -l services_hard
+-rw-r--r-- 2 lena lena 12813 Jul 31 20:57 service_hard
+#ls -l /home/lena/tmp/services
+-rw-r--r-- 2 lena lena 12813 Jul 31 20:57 /home/lena/tmp/services
+
+# NOTE: Every detail of the file is the same, except the inode number and file name, 
+# which is different for hard links.
+echo "The experiments from Lena" >> service_hard
+cat home/lena/tmp/services
+
+
+drwx------ 3 lena lena  4096 Jul 29 18:22 snap
+drwxr-xr-x 2 lena lena  4096 Jul 31 20:57 tmp
+
 
 ls -i /home/lena/tmp/services 
 ls -i service_link
