@@ -142,13 +142,19 @@ less /etc/services # page arrow down  or space # less is more
 # Up / Down  , 上下翻行
 # / "key word"  ==> search ,   n   next-match
 
-head /etc/services # -n : n line 
-tail -n 3 /etc/services #  
+head /etc/services # -n : n line , 查看文件的前 n 行，默认 10 行
+tail -n 3 /etc/services #  可动态查看文件的最后 n 行，默认 10 行
+tail -f /var/log/syslog # 实时查看文件内容，常用于监控
 
 cp /etc/services  /home/gao/tmp/
 ln -s /home/gao/tmp/services service_link
 ln /home/gao/tmp/services service_hard
 
+# 删除软连接的时候有一个时需要高度注意 
+# rm  service_link  # 只删除软连接本身，不会影响原文件
+# rm  service_link/  # 删除原文件夹！ ，非常危险，
+# rm  service_link/  会删除原文件夹及其内容，因为 service_link 是一个指向 /home/gao/tmp/services 的软连接，
+# 使用 rm service_link/ 会被解释为删除 /home/gao/tmp/services 目录及其内容。
 
 ls -i /home/gao/tmp/services 
 ls -i service_link
