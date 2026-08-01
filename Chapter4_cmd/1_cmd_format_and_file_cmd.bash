@@ -1,5 +1,5 @@
 #### 文件处理命令
-#! /home/gao/bash 
+#! /home/lena/bash 
 # cmd [-option] [parameters]     
 # 选项： 调整功能，
 # 参数： 操作的对象，比如： 用户，进程，文件，目录等
@@ -143,26 +143,48 @@ less /etc/services # page arrow down  or space # less is more
 # / "key word"  ==> search ,   n   next-match
 
 head /etc/services # -n : n line , 查看文件的前 n 行，默认 10 行
-tail -n 3 /etc/services #  可动态查看文件的最后 n 行，默认 10 行
+tail -n 3 /etc/services #  查看文件的最后 n 行，默认 10 行
 tail -f /var/log/syslog # 实时查看文件内容，常用于监控
 
-cp /etc/services  /home/gao/tmp/
-ln -s /home/gao/tmp/services service_link
-ln /home/gao/tmp/services service_hard
+mkdir  /home/lena/tmp/
+cp /etc/services  /home/lena/tmp/
+# touch -p tmp/services
+
+
+# ln -s 软连接，类似于 Windows 的快捷方式    <<<<< =====
+ln -s /home/lena/tmp/services service_link # ln 源文件 软连接
+# ln 硬连接，两个文件共享一个inode number，硬连接是指向同一个文件的不同目录项，
+# 删除其中一个不会影响另一个
+ln /home/lena/tmp/services service_hard
+ls -l
+
+ls -l
+total 40
+-rw-r--r-- 1 lena lena   338 Jul 29 10:37 AGENTS.md
+drwxr-xr-x 6 lena lena  4096 Jul 29 17:58 All_Tricks
+drwxr-xr-x 7 lena lena  4096 Jul 29 20:31 Linux
+drwxr-xr-x 3 lena lena  4096 Jul 22 22:42 Linux_and_Cluster_for_Omics-master
+-rw-r--r-- 2 lena lena 12813 Jul 31 20:57 service_hard
+# lrwxrwxrwx 1 lena lena    23 Jul 31 20:57 service_link -> /home/lena/tmp/services # ->    =======
+# EVRY Special !
+# lrwxrwxrwx  
+
+drwx------ 3 lena lena  4096 Jul 29 18:22 snap
+drwxr-xr-x 2 lena lena  4096 Jul 31 20:57 tmp
 
 # 删除软连接的时候有一个时需要高度注意 
 # rm  service_link  # 只删除软连接本身，不会影响原文件
 # rm  service_link/  # 删除原文件夹！ ，非常危险，
-# rm  service_link/  会删除原文件夹及其内容，因为 service_link 是一个指向 /home/gao/tmp/services 的软连接，
-# 使用 rm service_link/ 会被解释为删除 /home/gao/tmp/services 目录及其内容。
+# rm  service_link/  会删除原文件夹及其内容，因为 service_link 是一个指向 /home/lena/tmp/services 的软连接，
+# 使用 rm service_link/ 会被解释为删除 /home/lena/tmp/services 目录及其内容。
 
-ls -i /home/gao/tmp/services 
+ls -i /home/lena/tmp/services 
 ls -i service_link
 ls -i service_hard
 ls -il service_link
 ls -il service_hard
 
-echo "www.lampbrother.com" /home/gao/tmp/services service_hard
+echo "www.lampbrother.com" /home/lena/tmp/services service_hard
 
 # difference between hardlink  and cp -p  , can keep updating
 # hard ln cannot cross partion  不能跨分区，
