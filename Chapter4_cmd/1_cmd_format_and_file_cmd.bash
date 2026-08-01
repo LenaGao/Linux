@@ -135,8 +135,12 @@ cat /etc/services
 tac /etc/services # reverse
 
 more /etc/services # page arrow down  or space  a page , enter a line 
-less /etc/services # page arrow down  or space 
+less /etc/services # page arrow down  or space # less is more
 # /keyword  search , n   next-match
+# 在浏览状态 q : quit , 退出
+# Page up / Page down  , 上下翻页
+# Up / Down  , 上下翻行
+# / "key word"  ==> search ,   n   next-match
 
 head /etc/services # -n : n line 
 tail -n 3 /etc/services #  
