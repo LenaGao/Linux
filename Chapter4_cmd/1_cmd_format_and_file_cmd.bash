@@ -218,3 +218,24 @@ echo "www.lampbrother.com" /home/lena/tmp/services service_hard
 # hard ln cannot cross partion  不能跨分区，
 # 硬连接不能对目录使用
 
+# 权限更改命令
+chmod u+x file_name  # 给文件所有者添加执行权限
+chmod g-w file_name  # 移除文件所属组的写权限
+chmod o+r file_name  # 给其他用户添加读权限
+chmod a+r file_name  # 给所有用户添加读权限
+chmod g=rwx file_name  # 给文件所属组设置读、写、执行权限
+hmod 755 file_name   # 设置文件权限为 rwxr-xr-x
+
+r --- 4
+w --- 2
+x --- 1
+
+rwx --- 7
+r-x --- 5
+rw- --- 6
+r-- --- 4
+
+rwxrw-r--  764
+
+532
+r-x-wx-w-  按照数字表示写出权限位表示
