@@ -242,6 +242,11 @@ rwxrw-r--  764
 r-x-wx-w-  按照数字表示写出权限位表示
 
 
+文件的权限
+r 是 允许查看文件内容 cat/less/more/tail
+w 是 允许修改文件内容 vi/nano/gedit 
+x 是 允许执行文件 ./file_name 程序，脚本，命令
+
 目录的权限和文件完全不一样
 r 是 允许查看目录内容 ls
 w 是 允许在目录中创建、删除文件 touch，rm 
