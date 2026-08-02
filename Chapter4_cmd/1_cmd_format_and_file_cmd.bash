@@ -224,7 +224,8 @@ chmod g-w file_name  # 移除文件所属组的写权限
 chmod o+r file_name  # 给其他用户添加读权限
 chmod a+r file_name  # 给所有用户添加读权限
 chmod g=rwx file_name  # 给文件所属组设置读、写、执行权限
-hmod 755 file_name   # 设置文件权限为 rwxr-xr-x
+chmod 755 file_name   # 设置文件权限为 rwxr-xr-x
+chmod -R 755 dir  # 给目录及其子目录和文件设置权限为 rwxr-xr-x
 
 r --- 4
 w --- 2
@@ -239,3 +240,9 @@ rwxrw-r--  764
 
 532
 r-x-wx-w-  按照数字表示写出权限位表示
+
+
+目录的权限和文件完全不一样
+r 是 允许查看目录内容 ls
+w 是 允许在目录中创建、删除文件 touch，rm 
+x 是 允许进入目录 cd 
