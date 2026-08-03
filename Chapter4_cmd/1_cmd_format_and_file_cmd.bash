@@ -247,6 +247,8 @@ r 是 允许查看文件内容 cat/less/more/tail
 w 是 允许修改文件内容 vi/nano/gedit 
 x 是 允许执行文件 ./file_name 程序，脚本，命令
 
+
+
 目录的权限和文件完全不一样
 r 是 允许查看目录内容 ls
 w 是 允许在目录中创建、删除文件 touch，rm rmdir, mkdir
@@ -254,3 +256,44 @@ x 是 允许进入目录 cd
 
 尽管文件是root 用户创建的，但如果目录设置为777，其他用户也可以在该目录下创建、删除文件，
 因为目录的权限决定了对目录内容的操作权限，而不是文件本身的权限。
+删除文件的条件是对文件所在目录有写权限，而不是对文件本身有写权限。<< ============
+
+所以对目录，rx成对权限是必须，运行进入和查看目录内容，
+w是对目录内容的操作权限，删除文件的条件是对文件所在目录有写权限，而不是对文件本身有写权限。
+
+# 权限管理命令
+# 只有文件所有者或者 root 用户才能修改文件的权限和所有者。
+
+
+useradd # 添加用户
+groupadd # 添加组
+
+chown # 改变文件或目录的所有者和所属组
+chown user:group file_name  # 改变文件的所有者和所属组
+chown -R user:group dir  # 递归改变目录及其子目录
+
+cd home/lena/snap
+touch abcd
+
+chown root abcd
+chown zhen abcd
+
+
+
+lena@DESKTOP-C8OKE65 $ chown root abcd
+chown: changing ownership of 'abcd': Operation not permitted
+[21:19:06] [/home/lena/snap]:
+lena@DESKTOP-C8OKE65 $ chown zhen abcd
+chown: changing ownership of 'abcd': Operation not permitted
+
+sudo chown root abcd
+sudo chown zhen abcd
+
+chgrp # 改变文件或目录的所属组
+chgrp group_name file_name  # 改变文件的所属组
+chgrp lampbrother abcd
+
+文件创建着就是所有者
+文件的所属组是创建者的默认组，除非使用 chgrp 或 chown 改变。
+每个用户只能有一个默认组，但可以属于多个组。用户的默认组通常与用户名相同。
+默认组也叫 primary group 和 缺省组，其他组叫 secondary group。
