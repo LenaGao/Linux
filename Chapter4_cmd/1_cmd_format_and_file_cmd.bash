@@ -262,13 +262,17 @@ x 是 允许进入目录 cd
 w是对目录内容的操作权限，删除文件的条件是对文件所在目录有写权限，而不是对文件本身有写权限。
 
 # 权限管理命令
-# 只有文件所有者或者 root 用户才能修改文件的权限和所有者。
+# 只有文件所有者或者 root 用户才能修改文件的权限。
+# 只有 root 用户才能修改文件的所有者。
 
 
 useradd # 添加用户
 groupadd # 添加组
 
-chown # 改变文件或目录的所有者和所属组
+chown # 改变文件或目录的所有者和所属组.
+# 只有 root 用户才能使用 chown 命令改变文件的所有者和所属组。
+# 文件所有者不可以改变文件的所有者，但可以使用 chown 命令改变文件的所属组。
+ 
 chown user:group file_name  # 改变文件的所有者和所属组
 chown -R user:group dir  # 递归改变目录及其子目录
 
@@ -297,3 +301,24 @@ chgrp lampbrother abcd
 文件的所属组是创建者的默认组，除非使用 chgrp 或 chown 改变。
 每个用户只能有一个默认组，但可以属于多个组。用户的默认组通常与用户名相同。
 默认组也叫 primary group 和 缺省组，其他组叫 secondary group。
+
+umask # 设置默认权限（缺省权限又叫掩码） 
+# 0022 
+# 1st 0  特殊权限位， 0 表示没有特殊权限，2 表示去掉写权限， 2 表示去掉写权限
+# then 022  755-022 = 755    
+umask -S 
+# u=rwx,g=rx,o=rx
+
+cd  (cd ~)  # 回到用户的 home 目录
+mkdir lamp
+touch fanbingbing
+
+ls 
+
+if I want to set rwxt-xr--  754
+777-754 = 023
+
+umask 
+# 023
+
+umask 022
