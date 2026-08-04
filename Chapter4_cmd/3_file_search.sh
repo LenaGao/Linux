@@ -5,12 +5,21 @@
 
 =========== ++++++++++++++++ Part I
 # find file search, 默认精准搜索
-find /etc/ -name init
-sudo find /etc/ -name init
-sudo find /etc -name init* # init 开头
-sudo find /etc -name init??? # init + 3 characters
-sudo find /etc -name inittab 
-sudo find /etc -iname init* 
+# Ubuntu 2026 已经没有init文件了，init已经被systemd取代了，所以找不到init文件
+# find /etc/ -name init
+# sudo find /etc/ -name init
+# sudo find /etc/ -name init
+# sudo find /etc -name init* # init 开头
+# sudo find /etc -name init??? # init + 3 characters
+# sudo find /etc -name inittab 
+# sudo find /etc -iname init* 
+# find file search, 默认精准搜索
+sudo find /etc/ -name cron
+sudo find /etc/ -name cron
+sudo find /etc -name cron* # cron 开头
+sudo find /etc -name cron??? # cron + 3 characters
+sudo find /etc -name crontab 
+sudo find /etc -iname cron* 
 
 # +n, -n n 大于小于等于, 不能用如下搜索，因为wsl 能够搜索window11的硬盘，出现很多不应该出现的文件
 sudo find / -type f -size +5G -exec ls -lh {} \; 2>/dev/null
