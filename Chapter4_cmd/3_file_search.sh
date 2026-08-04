@@ -2,6 +2,7 @@
 # 负载高峰期，尽量避免使用 find 命令，尤其是搜索整个系统，可能会导致系统负载过高，影响其他用户的操作。建议在特定目录下进行搜索，或者使用 locate 命令来快速查找文件。
 # windows everything 也可以搜索整个系统，速度很快，
 # linux 没有类似的工具，locate 也只能搜索已经建立索引的文件，不能搜索整个系统
+# 搜索条件越具体/精准，搜索范围越小，搜索速度越快。尽量使用精确的文件名、路径和类型来缩小搜索范围。
 
 =========== ++++++++++++++++ Part I
 # find file search, 默认精准搜索
@@ -34,35 +35,24 @@ echo $((100 * 1024 * 1024 / 4096))  # 100M 文件换算成数据快
 # -ok -exec
 # -ok ask by each file,   hence -exec is much more popular
 sudo find /home/gao -type f -size +100M -exec ls -lh {} \; 2>/dev/null
+sudo find /home/lena -type f -size +100M -exec ls -lh {} \; 2>/dev/null
 
 sudo find /etc -name *init* -a -type f -exec ls -l {} \; # must keep the space "{} \;""
 sudo find /etc -name *init* -a -type f -ok ls -l {} \; # {} \;  space is needed! 
 
+# 根据所有者查找 
 # 查找shencao的所有文件 -user 
 sudo find /home -user shencao #
 sudo find /home -user shencao -ok rm  {} \; ##
 # -group
 sudo find /home -group meinv #
 
-# inode number 
-sudo find . -inum 19275595   -exec rm  {} \; ## 删除顽固文件
-sudo find . -inum 19275595   -exec ls -l  {} \; ## 展示详细信息
-
-# -type f d l
-# 注意原始方法是找block数目，而且恒定在512Byte， 不是本机4096Byte就改成4096， 所以会找出来 15M的文件
-sudo find /home/gao -type f -size +25600 -exec ls -lh {} \; 2>/dev/null # 查找大于 $12.5\text{ MB}$ 的文件
-sudo find / -type f -size +5G -exec ls -lh {} \; 2>/dev/null # 单位有c K M G 
-
-find /etc -size +100 # 100 block, 4096 in this linux 
-sudo find /etc -size +100  -a -size -2000 # larger than 100 block and less 2000 block
-#  -o or 
-
-find /etc -user gao # 100 block, 4096 in this linux 
 
 
-
-
-
+# 文件的属性
+amin # access time, 访问时间
+cmin # file status change time, 文件状态改变时间
+mmin # content modification time, 内容修改时间
 
 # 1. 过去10分钟内被修改过的文件
 find /your/path -mmin -10
@@ -80,6 +70,29 @@ find /etc /usr/bin /usr/sbin -cmin -5
 find /var/log -mmin -1 -name "*.log"
 
 # 与 -atime / -ctime / -mtime 的区别（天 vs 分钟)
+
+
+type f # file category, file type
+f file , d directory, l link, c character device, b block device, s socket, p pipe
+# -type f d l
+# 注意原始方法是找block数目，而且恒定在512Byte， 不是本机4096Byte就改成4096， 所以会找出来 15M的文件
+sudo find /home/gao -type f -size +25600 -exec ls -lh {} \; 2>/dev/null # 查找大于 $12.5\text{ MB}$ 的文件
+sudo find / -type f -size +5G -exec ls -lh {} \; 2>/dev/null # 单位有c K M G 
+
+find /etc -size +100 # 100 block, 4096 in this linux 
+sudo find /etc -size +100  -a -size -2000 # larger than 100 block and less 2000 block
+
+
+-a # and both requirements must be true
+-o # or either requirement can be true 
+#  -o or 
+
+find /etc -user gao # 100 block, 4096 in this linux 
+
+# inode number , Zhen 注： 这个实际上比较常用，因为有一些顽固文件，无法删除，使用 inode number 可以直接删除
+sudo find . -inum 19275595   -exec rm  {} \; ## 删除顽固文件
+sudo find . -inum 19275595   -exec ls -l  {} \; ## 展示详细信息
+
 
 
 help find
