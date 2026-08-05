@@ -109,14 +109,28 @@ lsblk -o NAME,PHY-SeC # chek th block size 4096
 
 
 =========== ++++++++++++++++ Part II 
-
-# sudo apt install locate # debian 
-# sudo dnf install mlocate # or sudo yum install mlocate
+# 建立了索引的文件搜索 locate 并不是在硬盘上找文件，而是通过查找一个数据库来快速定位文件。
+# 这个数据库通常会定期更新，以反映文件系统的当前状态。locate 命令的优势在于速度快，但它只能找到已经被索引的文件，不能搜索整个系统。
+# sudo apt install locate   # debian 
+# sudo dnf install mlocate  # or sudo yum install mlocate
 # sudo updatedb # mlocate 程序本身已安装，但它的自动数据库更新功能（定时器）未能成功配置。
+sudo apt install plocate
+
 locate service
+
 locate -i service  # 
 locate inittab
 locate locate  # /tmp not indexed
+
+touch testfile
+locate testfile  # not found, because / is not indexed
+sudo updatedb # update the database, 需要root权限，更新索引数据库 , 第一次使用很慢，因为要创建整个数据库，后续使用会快很多
+locate testfile  # not found, because / is not indexed
+
+touch /tmp/zhangbozhi
+sudo updatedb # update the database, 需要root权限，更新索引数据库
+locate zhangbozhi  # found, because /tmp is NOT indexed
+
 
 
 # which command 
