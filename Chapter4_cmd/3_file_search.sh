@@ -111,9 +111,11 @@ lsblk -o NAME,PHY-SeC # chek th block size 4096
 =========== ++++++++++++++++ Part II 
 # 建立了索引的文件搜索 locate 并不是在硬盘上找文件，而是通过查找一个数据库来快速定位文件。
 # 这个数据库通常会定期更新，以反映文件系统的当前状态。locate 命令的优势在于速度快，但它只能找到已经被索引的文件，不能搜索整个系统。
+
 # sudo apt install locate   # debian 
 # sudo dnf install mlocate  # or sudo yum install mlocate
-# sudo updatedb # mlocate 程序本身已安装，但它的自动数据库更新功能（定时器）未能成功配置。
+# sudo updatedb   # mlocate 程序本身已安装，但它的自动数据库更新功能（定时器）未能成功配置。
+
 sudo apt install plocate
 
 locate service
@@ -131,19 +133,36 @@ touch /tmp/zhangbozhi
 sudo updatedb # update the database, 需要root权限，更新索引数据库
 locate zhangbozhi  # found, because /tmp is NOT indexed
 
+locate -i Zhangbozhi  # found, because /tmp is NOT indexed, 
+# 有些位置不在locate的索引数据库中，locate命令无法找到这些位置的文件。比如，/tmp目录通常不在locate的索引数据库中，因此在/tmp目录下创建的文件无法通过locate命令找到。
 
-
-# which command 
+# which command ， 查路径和有无别名
 which ls      # see the dir color  is alias
 ls -l
 /usr/bin/ls -l # use the raw command directly
-which rm
+which rm               # from /usr/bin/rm, everyone can use it   
 which cd               # No path are buildin command 
 which umask
+which useradd           # from /usr/sbin/useradd , only root can use it
 
+# which and whereis 都可以查找命令的路径，但 whereis 还可以查找命令的帮助信息和配置文件。
+# whereis 命令会在系统的标准路径中查找指定命令的二进制文件、源代码文件和手册页，并显示它们的路径。
 whereis umask   # 命令和帮助信息
 whereis passwd  # 命令和配置文件
 whatis  passwd
+whatis  passwd
+
+# 别名，实际上大部分命令都是别名，alias ls='ls --color=auto'，可以使用unalias ls来取消别名，恢复原始命令。
+# 是原有功能进行了增强，增加了颜色显示，方便区分文件类型和权限等信息。
+# 大多数常用alias 写在了配置文件 ~/.bashrc 文件中，用户可以根据自己的需求进行修改和添加。
+
+alias ls='ls --color=auto'
+unalias ls
+
+ls
+
+source ~/.bashrc
+ls
 
 clear # = Ctrl + l
 cp -r tmp1_ZG/ tmp3_ZG/
@@ -153,7 +172,9 @@ cp services  services2
 cp services  services3
 cp -r /home/gao/Code/Linux_and_Cluster_for_Omics/LinuxCodes/lampLinux/tmp .
 
-cat inittab
+
+# 查找文件内容，grep 某一行
+cat inittab # inittab 文件已经被 systemd 取代了，所以在 Ubuntu 2026 中可能找不到该文件。
 grep service /etc/inittab
 grep -v ^#  /etc/inittab # -v  ;  Begninging # 
 grep world file.txt

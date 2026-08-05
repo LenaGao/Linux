@@ -1,3 +1,4 @@
+# manuel ， 命令和配置文件的帮助文档
 man ls       # command 
 man find     # command 
 man services # configure file 
@@ -30,10 +31,16 @@ whatis date
 info date
 
 which cd 
-man cd
+man ls
+/-l search the option in the man page , n==> next match , down arrow key to next line , q==> quit
+# man cd
 
 date
 man date 
+man services # 配置文件帮助文档
+man passwd   # 命令帮助文档 ， 既有命令又有配置危机，优先查看命令
+man 1 passwd
+man 5 passwd
 # dnf install info
 info date
 
