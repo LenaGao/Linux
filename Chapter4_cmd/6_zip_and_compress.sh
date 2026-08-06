@@ -1,8 +1,11 @@
-.gz  gzip
-.tar tar -cf -xf
-.tar.gz tar -zcf -zxf
-.tar.bz2 tar -jcf -jxf
+# linux 下的压缩
+.gz        <== gzip                     # 压缩 
+.tar       <== tar -cf -xf              # 打包
+.tar.gz    <== tar -zcf -zxf            # 打包并压缩成 gz 格式
+.tar.bz2   <== tar -jcf -jxf            # 打包并压缩成 bz2 格式
 
+# zip 只有这一个个是可以跨linux window 压缩解压缩
+# rar only in Windows 
 
 
 # regular compressed format
@@ -15,6 +18,7 @@ touch boduo
 cp file.txt file1.txt
 cp inittab inittab1 
 
+# gzip 只能压缩文件，不能压缩目录
 gzip boduo
 gzip services3
 ll                   # 5 fold compress 

@@ -7,5 +7,6 @@ passwd # No need add username ,  因为普通用户改密码就是改自己这�
 # shenchao sh@mcha0  passwd 
 
 who        # 当前登录用户
-w          # u一切用户， 其中up: uptime 
+w          # 当前登录用户的详细信息， 其中up: uptime 
 whoami     # 我/当前用户是谁
+loginctl list-users # 系统识别的所有用户：
