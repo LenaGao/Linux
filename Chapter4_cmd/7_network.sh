@@ -21,8 +21,13 @@ lastlog  -u 501 # all user , uid
 
 traceroute www.google.com
 
-netstat -tlun # 查看本地监听的端口 -t tcp  -u udp  间接判断本地有哪些服务
-netstat -an   # 查看本机所有的网络连接  -a all 
+netstat -tlun # 查看本地监听的端口 , and 间接判断本地有哪些服务
+-t tcp  -u udp  
+-l listen
+-n show IP and terminal  ==>  127.0.0.54:53
+
+netstat -an   # 查看本机所有的网络连接  -a all  # connected /established
+
 netstat -rn   # 查看本机路由表 网关是 Gateway 
 
 netstat -an | grep ESTAB*  # 正在连接的程序
@@ -31,10 +36,13 @@ setup # redhat setup address
 
 service network restart # 重启网络服务
 
+# 挂载和卸载存储设备
 mkdir /mnt/cdrom 
-mount /dev/sro /mnt/cdrom 
-mount -t iso9660 /dev/sro /mnt/cdrom
+mount /dev/sr0 /mnt/cdrom 
+mount -t iso9660 /dev/sr0 /mnt/cdrom # -t might be omit
 
+# 卸载
 umount 
+# 必须离开设备挂载点才能卸载该设备
 
 ll  /dev/cdrom
