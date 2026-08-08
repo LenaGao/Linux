@@ -9,6 +9,8 @@ sudo ping -c 3 192.168.1.171 # No C , never stop
 
 
 ifconfig  # check and set ip address 
+# eth0
+# lo
 
 mail root 
 
