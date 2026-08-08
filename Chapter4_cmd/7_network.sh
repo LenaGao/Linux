@@ -1,8 +1,11 @@
-write  # to online user
+# 网络命令
+write  # to online user， 必须在线
 
-wall  minge is the honest man # to all online user 
+# write all
+wall  minge is the honest man # to all online user  
 
-sudo ping -c 3 192.168.1.171 # never stop 
+sudo ping -c 3  google.com # try 3 times 
+sudo ping -c 3 192.168.1.171 # No C , never stop 
 
 
 ifconfig  # check and set ip address 
