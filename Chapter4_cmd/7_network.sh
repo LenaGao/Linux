@@ -12,12 +12,12 @@ ifconfig  # check and set ip address
 # eth0
 # lo
 
-mail root 
+mail root # 用户不在线，还是可以使用
 
 # Important log cmd 
 last     # all user login time and computer reboot time 
 lastlog  # all user 
-lastlog  -u 501 # all user 
+lastlog  -u 501 # all user , uid
 
 traceroute www.google.com
 
