@@ -1,13 +1,14 @@
-# 服务器禁止关机只能重启，
+# 服务器高度可以处于高速运转状态，和个人机差别较大
+# 服务器禁止关机只能重启 <<<<========================================
 # 关机之前要关闭服务
 # shutdown 关机之前会合理保存文件
 shutdown -h now # shutdown now 
+shutdown -h 20:50 # shutdown 20:50 
 shutdown -r now # reboot now # 20:30:30
 shutdown -c # cancel
 
-
 halt
-poweroff # Most dangerous
+poweroff # Most dangerous do NOT use  << ==== 
 init 0
 
 === reboot
