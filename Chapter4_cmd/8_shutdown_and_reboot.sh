@@ -15,23 +15,24 @@ init 0
 reboot
 init 6
 
-cat /etc/inittab # already depreciated!
+cat /etc/inittab # already depreciated!  <<<< ====
 runlevel
 N 3      # N : ealier level, N means from reboot 
 
 0 关机                                  halt
-1 单引号                                Single user mode
-2 不完全多用户，不含NFS服务（网络文件系统）Multiuser, without NFS
-3 完全多用户   Full multiuser mode                           
+1 单引户 == Root                        Single user mode， ROOT
+2 不完全多用户，不含NFS服务（网络文件系统）Multiuser, without NFS , network file system
+3 完全多用户   Full Multiuser mode , with NFS                           
 4 未分配    unused 
 5 图形界面  x11
 6 重启      reboot(No NOT set initdefault to this)
 
+# Linux X 基本上都是图像界面窗口的，或者图像界面，大写X 
 X  X11,  X86,  X window X free86
 
 upcase X all means GUI
 
-id:3:initdefault  # 修改默认运行级别
+id:3:initdefault  # 修改默认运行级别，0  4 6 都禁止， 1235 可以，真实服务器是35， 尤其是3为主
 
 # Importang!! for system administrator
 logout
