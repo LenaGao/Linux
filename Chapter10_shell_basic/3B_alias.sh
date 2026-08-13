@@ -9,7 +9,7 @@ alias # 显示本系统别名
 
 unalias
 
-快捷键 shortcut
+快捷键  ================ Shortcut Key
 
 Ctrl + C # stop
 Ctrl + L # clear
