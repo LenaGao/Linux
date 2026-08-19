@@ -67,3 +67,6 @@ echo "$(date)"
 
 abcDate=`date`
 echo $abcDate
+
+# \ 转义符，让后面的特殊符号$ 失去作用，变成普通字符
+echo \$name 
