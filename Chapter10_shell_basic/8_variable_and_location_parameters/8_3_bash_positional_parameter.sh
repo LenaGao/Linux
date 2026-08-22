@@ -1,4 +1,8 @@
+#!/bin/bash 
+# location parameters 我一开始的应用写法是错的，不应该是这个写法
+# 这里的位置参数是 positional 不是location
 # bash positional parameter 有4种， $n  $*  $@  $#
+
 
 $n # 其中n为数字 $0 $1 $9 ${12}
 
