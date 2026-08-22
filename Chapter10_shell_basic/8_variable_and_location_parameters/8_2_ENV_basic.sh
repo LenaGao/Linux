@@ -31,12 +31,20 @@ $PATH
 
 # 我们通常会增加命令搜索路径，这样新的命令就以找到
 
-PATH="$PATH":/home/lena  # 变量叠加
+PATH="$PATH":/home/lena  # 变量叠加, 临时生效
 # 要想永久生效，就必须写入对应的配置文件   这里是 .bashrc
 
 
 # PS1 can only check with set 
 $PS1     # 定义用户的提示栏              
+\[\]\[\e]0;\u@\h:: 
+\h 显示简写主机名
+\u 显示当前用户名
+@  显示这个字符
+[   显示这个字符
+]   显示这个字符
+
+
 
 unset  # del a variable by name 
 
