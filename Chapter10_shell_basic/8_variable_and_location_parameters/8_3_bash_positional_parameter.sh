@@ -4,7 +4,7 @@
 # bash positional parameter 有4种， $n  $*  $@  $#
 
 
-$n # 其中n为数字 $0 $1 $9 ${12}
+$n # 其中n为数字，比如 $0 $1 $9 ， 如果大于等于10， 则需要用大括号括起来表示一个整体： ${12}
 
 # $0, cmd itslef , $1-9 and later are location parameters, 
 # ${10} and after have to use {}
