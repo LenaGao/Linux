@@ -12,16 +12,26 @@ age=18
 export age           # 把变量声明为环境变量 
 export gender=male   # 直接创建环境变量 
 
-# all  ENV variable can to wrotten to .bashrc   <<<<<===配置文件
-
-env # check all ENV variable
-
-unset  # del a variable by name 
+bash # 进入子shell
 
 pstree 
 
+echo $gender
+
+# all  ENV variable can to wrotten to .bashrc   <<<<<===配置文件
+
+env  # check all ENV variable， 但PS1 查不到
+
+# PS1 can only check with set 
+$PS1     # 定义用户的提示栏              
 
 # all cmd are searched in PATH
 $PATH
-# PS1 can only check with set 
-$PS1     # 定义用户的提示栏              
+
+set  #  更多的环境变量
+set | grep PS1 # 可以查到PS1
+
+unset  # del a variable by name 
+
+
+
