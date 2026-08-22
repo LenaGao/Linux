@@ -13,7 +13,8 @@ for y in "$@"
         echo "The paramter $x is:  $y"
         x=$(( $x+1 ))
     done
-# bash 8_3D_location_parameter.sh 12 23 44 56 88 77 
+
+# bash bash 8_3D_bash_positional_parameter 12 23 44 56 88 77 
 
 # The paramter is 12 23 44 56 88 77
 
