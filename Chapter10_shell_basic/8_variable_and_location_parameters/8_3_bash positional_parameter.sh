@@ -1,5 +1,7 @@
-# location parameters
-$n # $0 $1 $9 ${12}
+# bash positional parameter 有4种， $n  $*  $@  $#
+
+$n # 其中n为数字 $0 $1 $9 ${12}
+
 # $0, cmd itslef , $1-9 and later are location parameters, 
 # ${10} and after have to use {}
 
