@@ -2,6 +2,16 @@
 
 unset y
 echo $y
+x=${y-new_value}
+echo $x
 
+y=""
+echo $y
+x=${y-new_value}
+echo $x
+
+
+y=old
+echo $y
 x=${y-new_value}
 echo $x
