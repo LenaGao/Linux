@@ -1,3 +1,6 @@
+~/.bash_logout  # 退出登录的工作，比如注销什么
+~/.bash_history  # 退出登录之后才写入这个文件，未退出前保存在memory （内存）中
+
 # 登录欢迎信息
 # 本地
 cat /etc/issue
