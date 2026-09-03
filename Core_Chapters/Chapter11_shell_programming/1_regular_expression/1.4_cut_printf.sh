@@ -1,0 +1,5 @@
+cut 字段截取命令
+printf 格式化输出命令
+
+这两个命令的更多实例在
+/home/lena/Linux/Core_Chapters/Chapter11_shell_programming/2_column_extract_cut_and_printf
