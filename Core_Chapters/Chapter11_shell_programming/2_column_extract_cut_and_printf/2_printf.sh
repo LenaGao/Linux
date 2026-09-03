@@ -1,4 +1,7 @@
-# for awk 
+格式化输出命令
+printf   '输出类型 和 输出格式'  输出内容
+# for awk  <<< ====
+
 # print also works for awk, and add  \n automatically
 # but linux has no print.
 
@@ -11,6 +14,8 @@
 # \t 制表符  
 
 # cd Code/Linux_and_Cluster_for_Omics/LinuxCodes/lampLinux/Chapter11_shell_programming/
+
+
 
 printf %s  1 2 3 4 5 6  
 printf %s %s %s  1 2 3 4 5 6  
