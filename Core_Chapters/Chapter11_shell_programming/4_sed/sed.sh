@@ -36,9 +36,10 @@ sed '2a hello' ../data/student1.txt
 sed '2i hello' ../data/student1.txt
 
 # 插入动作 i -insert option ，  允许多行， 但需要加上 '\' 续行符， 并在终端分两行输入
-# sed '2i hello \   
-# canglaos'  ../data/student1.txt
-# 以上要在终端分两行输入
+这里插入了两行， 用鼠标选择这两行， ctrl + enter 一起执行即可
+#'\' means another line
+sed '2i hello \
+world' ../data/student1.txt
 
 
 替换一行的动作 c : replace a line 
@@ -69,9 +70,6 @@ sed -i '5s/99/55/g' ../data/studentForSed_back.txt
 # -e mutiple replace togethers
 sed -e 's/Zhen//g;s/xiao//g' ../data/studentForSed.txt
 
-#'\' means another line
-sed '2i hello \
-world' ../data/student1.txt
 
 #replace a string
 #replace a string in whole documents  
