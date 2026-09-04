@@ -4,6 +4,9 @@
 # 实际上除了空白作为分割，有tab， ， ：等分隔符的， 尽量用cut
 # 格式 awk 【条件】 打印  文件
 
+pwd
+cd /home/lena/Linux/Core_Chapters/Chapter11_shell_programming/3_awk
+
 awk '{printf $2 "\t" $4 "\t" $6 "\n" }' ../data/student.txt #  df_info.txt
 awk '{print $1 "\t" $3 "\t" $5  }'      ../data/student.txt #  df_info.txt
 
