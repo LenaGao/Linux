@@ -15,6 +15,16 @@ else
     echo "your login shell is not bash but $SHELL"
 fi
 
+
+# then 放在同一行中需要加分号
+在不同行，不需要加分号
+if [ "$SHELL" = "/bin/bash" ]
+then # 唯一的区别是 if then else 分成两行，     不需要加分号
+    echo "your login shell is the bash (bourne again shell)"
+else
+    echo "your login shell is not bash but $SHELL"
+fi
+
 # if ; then  在一行中需要加； 
 # if  
 # then 分成两行，不需要；
