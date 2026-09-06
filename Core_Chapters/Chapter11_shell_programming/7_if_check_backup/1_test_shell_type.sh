@@ -7,7 +7,13 @@
 
 
 # test if 我的bash 是 /bin/bash
-使用常见的if then else 格式 
+使用常见的if then else 格式
+注意 fi 结尾
+
+[ ] 内部的条件判断可以使用 test 命令或者 [ ] 来实现
+[ ] 就是之前介绍的判断语句 （test） 的另一种写法，功能完全一样，只是语法上更方便一些。
+
+[ ] 内部的前后都需要有空格，不能顶格写，比如写成 [-e /root]，否则会报错 
 
 if [ "$SHELL" = "/bin/bash" ]; then
     echo "your login shell is the bash (bourne again shell)"
