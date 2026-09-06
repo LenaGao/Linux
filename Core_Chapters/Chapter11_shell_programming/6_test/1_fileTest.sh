@@ -33,8 +33,6 @@ test -e /etc/passwd
 [ -e /etc/passwd ]
 [ -e /etc/passwd ] && echo "yes, it's exist" || echo no
 可以看到"yes, it's exist" 
-
-[ -w student.txt ] && echo "yes, it's exist and writable" || echo "no, it's not exist or not writable"
 [ -w student.txt ] && echo "yes, it's exist and writable" || echo "no"
 [ -w student.txt ] && echo "yes, it's exist and writable" || echo no
 
