@@ -6,9 +6,11 @@
 # 获取当前日期，格式为 年月日，
 # 260906
 
-date=$(date +\%y\%m\%d)  # contab %有特殊含义，不能直接使用，需要用转义符\转义
+# date=$(date +\%y\%m\%d)  # contab %有特殊含义，不能直接使用，需要用转义符\转义
+date= $(date +%y%m%d) 
 size=$(sudo du -sh /etc) # 获取 /etc 目录的大小（sudo 因为部分文件普通用户无权限读取）
 
+echo $date
 echo $size
 
 # 判断备份目录 /tmp/dbback 是否已存在
