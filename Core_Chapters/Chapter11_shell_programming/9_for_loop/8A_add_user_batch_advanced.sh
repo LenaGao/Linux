@@ -2,6 +2,8 @@
 # add a group of user with specified amount
 # Author Zhen Gao (zhen.gao@yahoo.com)
 
+#!/bin/bash
+
 # 批量添加用户，但是用户名不能是自然ID或者真实姓名那样没什么明确规律，
 # 这里时候结构完全一致，加上序列号的批量用户
 
@@ -27,13 +29,29 @@ if [ ! -z "$name" ] && [ ! -z "$num" ] && [ ! -z "$pass" ]; then  # this one muc
         echo "Creating $num users named ${name}1 to ${name}${num}..."
 
         # 4. 使用正确的 Bash C 风格 for 循环
-        for (( i = 1; i <= num; i++ )); do
+        for (( i = 1; i <= $num; i++ )); do
+            
+            USERNAME="${name}${i}"                           # 构建用户名，例如 user1, user32
 
-            sudo useradd "$name$i" &> /dev/null #             # 加引号防止变量里有空格/通配符时被展开或分词
-            echo "$pass" | sudo passwd --stdin "$name$i" &> /dev/null # 用 echo 管道传密码， "passwd --stdin " 接收输入（2026 修正）
+            # 添加用户 (抑制错误输出)
+            useradd "$USERNAME" &> /dev/null
 
+            # 设置密码 (通过管道和 --stdin 方式设置密码)
+            echo "$pass" | passwd --stdin "$USERNAME" &> /dev/null
+            
+            if [ $? -eq 0 ]; then
+                echo "User $USERNAME created successfully."
+            else
+                echo "Error creating user $USERNAME."
+            fi
+            
         done
+    else
+        echo "Error: User number ($num) contains non-digit characters."
     fi
+
+else
+    echo "Error: All fields (Name, Number, Password) must be provided."
 fi
 
 # sudo bash 8_add_user_batch.sh 
