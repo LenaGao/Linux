@@ -5,8 +5,8 @@
 #!/bin/bash
 
 # 1. 获取用户输入
-read -p "Please input group user name: " -t 30 name
-read -p "Please input user num: " -t 30 num
+read -p "Please input group user name: "               -t 30 name
+read -p "Please input user num: "                      -t 30 num
 read -p "Please input temporaty group user password: " -t 30 pass
 
 # 2. 检查输入是否为空 (name, num, pass 都不为空)
