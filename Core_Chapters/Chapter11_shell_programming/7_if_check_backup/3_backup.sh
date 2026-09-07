@@ -1,8 +1,11 @@
 #!/bin/bash
+
 # 脚本功能：备份/etc 目录，并把备份文件放在 /tmp/dbback 目录下
-# hard lnk 硬链接  ln 源文件 目标文件
-# soft lnk 软链接 ln -s 源文件 目标文件
-#date=$(date +%y%m%d) # 获取当前日期，格式为 年月日，
+
+# echo $(date +%y%m%d) 
+# 获取当前日期，格式为 年月日，
+# 260906
+
 date=$(date +\%y\%m\%d) # contab %有特殊含义，不能直接使用，需要用转义符\转义     
 size=$(sudo du -sh /etc)
 
@@ -23,3 +26,6 @@ if [ -d /tmp/dbback ]
         rm -rf /tmp/dbback/db.txt
 fi
 
+
+# hard lnk 硬链接  ln 源文件 目标文件
+# soft lnk 软链接 ln -s 源文件 目标文件
