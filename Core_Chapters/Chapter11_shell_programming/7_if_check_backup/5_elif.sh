@@ -1,14 +1,15 @@
 #!/bin/bash
 #Author Zhen Gao (Email: zhen.gao@yahoo.com)
 
-read -t 300 -p "Please input a filename: " file
+read -t 300 -p "Please input a filename: " file # file 是输入的接收变量
+# 接收键盘的输入，并赋予变量 file
 
 echo $file
 if [ -z $file  ]
 then
     echo "Error, Your didn't input a filename "
     exit 1
-elif [ ! -e $file ]    
+elif [ ! -e $file ]    # -e file 如果是文件，取反 == >> 即如果不是文件
 then
     echo "Your input is NOT a filename "
     exit 2
