@@ -80,14 +80,33 @@ TIME               # 进程使用的CPU时间总和
 
 
 查看系统健康状态
-top                   # 实时查看系统进程状态, 每三秒钟更新一次
+top                   # 实时查看系统进程状态, 每3秒钟更新一次
 前五行 top 5 lines show most important system info
 up 已经运行了一天3h26 分
 
 htop                  # 更友好的实时查看系统进程状态（需要安装htop包）
+
+
 pstree                # 以树状图显示进程关系
+
+
+终止进程
+kill -l              # 查看各种可以使用的信号
+1 关闭该进程并重启
+2
+8  
+9 强制终止
+
 kill PID             # 终止指定PID的进程
+
+kill 1 PID           # 重启指定PID的进程
+kill 9 PID           # 强制终止指定PID的进程
+
 killall process_name  # 终止所有指定名称的进程
+
+
+
+
 
 nice -n 10 command    # 以较低优先级运行命令
 renice -n 5 -p PID    # 修改指定PID进程的优先级
