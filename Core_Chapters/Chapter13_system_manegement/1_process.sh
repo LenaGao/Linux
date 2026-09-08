@@ -2,9 +2,15 @@
 
 进程是正在运行中的程序
 每个进程都是一个运行的实体，都有自己的地址空间，会占用一定资源
-只不过有的进程瞬间就完成，很难抓住运行中的进程
+
+有的进程瞬间就完成，很难抓住运行中的进程
 而有的大型生物信息进程会运行好几天
-windows任务管理器会列出所有正在运行的程序
+如果是服务器，很多进程会处在永久运行状态（比如网站服务器）
+或者理想状态是永久运行状态
+
+
+
+windows任务管理器会列出所有正在运行的程序, 进程管理和window 中的任务管理器的工作非常类似
 
 
 任何程序只要要运行就会占用一个或多个进程号（PID，Process IDentifier）
@@ -17,32 +23,29 @@ windows任务管理器会列出所有正在运行的程序
 
 # (2) =============Processes管理命令
 ps aux                # 查看所有用户的进程, UNIX风格
+ps -aux               # - 并不出错，但会被忽略
 ps -ef                # 查看所有用户的进程, Linux风格
 ps -le                # 查看所有用户的进程,Linux风格，显示更详细信息
+
+=========其实核心就是上面这个三个
+样本：
+
+ps aux                # 查看所有用户的进程, UNIX风格
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.1  23364 13344 ?        Ss   18:07   0:00 /sbin/init
+root           2  0.0  0.0   3180  2208 hvc0     Sl+  18:07   0:00 /init
+root           6  0.0  0.0   3216  2140 hvc0     Sl+  18:07   0:00 plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-trunca
+root          39  0.0  0.1  68384 16256 ?        S<s  18:07   0:00 /usr/lib/systemd/systemd-journald
+
+==== /sbin/init  进程的PID 永远都是 1  
+系统启动的第一个进程，是其余所有进程的父进程
+
+
 ps aux | grep httpd   # 查看所有用户的httpd进程, UNIX风格
 ps -aux | grep httpd  # - 并不出错，但会被忽略
+
 ps -ef | grep httpd   # 查看所有用户的httpd进程, Linux风格
 ps -le | grep httpd   # 查看所有用户的httpd进程,Linux风格，显示更详细信息
-    tty                # 终端类型
-    tty1-6             # 字符界面物理终端
-    tty7               # 图形界面物理终端
-    pts/0-n            # 伪终端 256个
-    CMD                # 进程名称
-    STAT               # 进程状态    
-        R 运行中 (Running)
-        S 睡眠中 (Sleeping)
-        D 不可中断睡眠 (Disk sleep)
-        T 停止 (Stopped)
-        Z 僵尸进程 (Zombie)，正确中止会产生临时性的僵尸进程，如果始终存在说明父进程没有正确回收子进程
-        S+ 前台进程 (Foreground process)
-        Sl 多线程 (Multi-threaded)
-        Sl+ 多线程前台进程 (Multi-threaded foreground process)
-        + 高优先级 (High priority)
-        Ss  会话首进程 (Session leader)
-    TIME               # 进程使用的CPU时间总和
-
-    VSZ                # 进程使用的虚拟内存大小 (Virtual Set Size)
-    RSS                # 进程使用的物理内存大小 (Resident Set Size)
 
 PID                   # 进程ID
 /sbin/init            # init进程，所有进程的祖先进程，PID=1, PPID=0 计算机启动后第一个运行的进程
@@ -51,7 +54,35 @@ UID                   # 进程所属用户ID
 GID                   # 进程所属组ID
 %CPU                  # 进程占用的CPU百分比
 
-top                   # 实时查看系统进程状态, top 5 lines show most important system info
+VSZ                # 进程使用的虚拟内存大小 (Virtual Set Size)
+RSS                # 进程使用的物理内存大小 (Resident Set Size)
+TTY                # 该进程是在哪个终端中运行，tty1-tty6 是本地字符界面终端，tty7是图形终端，pts/0-255 代表虚拟终端 ， 可以认为远程登陆
+
+
+tty                # 终端类型
+tty1-6             # 字符界面物理终端
+tty7               # 图形界面物理终端
+pts/0-n            # 伪终端 256个
+CMD                # 进程名称
+STAT               # 进程状态, 有下面这几种    
+    R 运行中 (Running)
+    S 睡眠中 (Sleeping)
+    D 不可中断睡眠 (Disk sleep)
+    T 停止 (Stopped)
+    Z 僵尸进程 (Zombie)，正确中止会产生临时性的僵尸进程，如果始终存在说明父进程没有正确回收子进程
+    S+ 前台进程 (Foreground process)
+    Sl 多线程 (Multi-threaded)
+    Sl+ 多线程前台进程 (Multi-threaded foreground process)
+    + 高优先级 (High priority)
+    Ss  会话首进程 (Session leader)
+TIME               # 进程使用的CPU时间总和
+
+
+
+查看系统健康状态
+top                   # 实时查看系统进程状态, 每三秒钟更新一次
+前五行 top 5 lines show most important system info
+up 已经运行了一天3h26 分
 
 htop                  # 更友好的实时查看系统进程状态（需要安装htop包）
 pstree                # 以树状图显示进程关系
@@ -74,17 +105,26 @@ fg %2                 # 将任务2带到前台
 
 # (4) ============= 进程管理的目的 ========================
 # 进程管理的目的
-查看服务器健康状态
+查看服务器健康状态  =========== 这是运维工程师的进程管理的首要工作， 大型网站往往有 { 监控服务器 }
+
 查看服务器负载
+
 查看系统中所有进程
+监控非法进程==病毒和木马
+
 查看当前用户的后台任务
+
 释放系统资源
+
 终止无响应进程
 调整进程优先级
 监控系统性能
+
 确保关键服务运行
 彻底关闭不必要的服务
-彻底消灭恶意软件和病毒，不只是终止恶意进程
+
+彻底消灭恶意软件和病毒，不只是终止恶意进程 ======<<<<<<<<<<<<<<<<<<<<< 
+
 优化系统性能和响应速度
 
 搭建监控服务器
